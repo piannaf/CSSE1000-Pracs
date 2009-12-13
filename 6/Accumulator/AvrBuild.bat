@@ -1,0 +1,2 @@
+@ECHO OFF
+"C:\Program Files\Atmel\AVR Tools4.13\AvrAssembler2\avrasm2.exe" -S "D:\classes\csse1000\Prac\6\Accumulator\labels.tmp" -fI -W+ie -o "D:\classes\csse1000\Prac\6\Accumulator\Accumulator.hex" -d "D:\classes\csse1000\Prac\6\Accumulator\Accumulator.obj" -e "D:\classes\csse1000\Prac\6\Accumulator\Accumulator.eep" -m "D:\classes\csse1000\Prac\6\Accumulator\Accumulator.map" "D:\classes\csse1000\Prac\6\Accumulator\Accumulator.asm"

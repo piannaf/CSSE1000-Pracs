@@ -1,0 +1,252 @@
+
+prepC.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000122  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          00000003  00800060  00800060  00000196  2**0
+                  ALLOC
+  2 .debug_aranges 00000020  00000000  00000000  00000196  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_pubnames 00000058  00000000  00000000  000001b6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   00000109  00000000  00000000  0000020e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 000000ae  00000000  00000000  00000317  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   00000149  00000000  00000000  000003c5  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000050  00000000  00000000  00000510  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    000000a2  00000000  00000000  00000560  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c c0       	rjmp	.+24     	; 0x1a <__ctors_end>
+   2:	1b c0       	rjmp	.+54     	; 0x3a <__bad_interrupt>
+   4:	35 c0       	rjmp	.+106    	; 0x70 <__vector_2>
+   6:	19 c0       	rjmp	.+50     	; 0x3a <__bad_interrupt>
+   8:	55 c0       	rjmp	.+170    	; 0xb4 <__vector_4>
+   a:	17 c0       	rjmp	.+46     	; 0x3a <__bad_interrupt>
+   c:	16 c0       	rjmp	.+44     	; 0x3a <__bad_interrupt>
+   e:	15 c0       	rjmp	.+42     	; 0x3a <__bad_interrupt>
+  10:	14 c0       	rjmp	.+40     	; 0x3a <__bad_interrupt>
+  12:	13 c0       	rjmp	.+38     	; 0x3a <__bad_interrupt>
+  14:	12 c0       	rjmp	.+36     	; 0x3a <__bad_interrupt>
+  16:	11 c0       	rjmp	.+34     	; 0x3a <__bad_interrupt>
+  18:	10 c0       	rjmp	.+32     	; 0x3a <__bad_interrupt>
+
+0000001a <__ctors_end>:
+  1a:	11 24       	eor	r1, r1
+  1c:	1f be       	out	0x3f, r1	; 63
+  1e:	cf e5       	ldi	r28, 0x5F	; 95
+  20:	d2 e0       	ldi	r29, 0x02	; 2
+  22:	de bf       	out	0x3e, r29	; 62
+  24:	cd bf       	out	0x3d, r28	; 61
+
+00000026 <__do_clear_bss>:
+  26:	10 e0       	ldi	r17, 0x00	; 0
+  28:	a0 e6       	ldi	r26, 0x60	; 96
+  2a:	b0 e0       	ldi	r27, 0x00	; 0
+  2c:	01 c0       	rjmp	.+2      	; 0x30 <.do_clear_bss_start>
+
+0000002e <.do_clear_bss_loop>:
+  2e:	1d 92       	st	X+, r1
+
+00000030 <.do_clear_bss_start>:
+  30:	a3 36       	cpi	r26, 0x63	; 99
+  32:	b1 07       	cpc	r27, r17
+  34:	e1 f7       	brne	.-8      	; 0x2e <.do_clear_bss_loop>
+  36:	02 d0       	rcall	.+4      	; 0x3c <main>
+  38:	72 c0       	rjmp	.+228    	; 0x11e <_exit>
+
+0000003a <__bad_interrupt>:
+  3a:	e2 cf       	rjmp	.-60     	; 0x0 <__vectors>
+
+0000003c <main>:
+int	time;	/* the current time */
+
+int main(void)
+{
+	/* Initialize variables */
+	run = 0;
+  3c:	10 92 62 00 	sts	0x0062, r1
+	time = 0;
+  40:	10 92 61 00 	sts	0x0061, r1
+  44:	10 92 60 00 	sts	0x0060, r1
+
+	/* Initalize AVR8515 */
+	/* PORTC will be output for hex display */
+	DDRC = 0xFF;
+  48:	8f ef       	ldi	r24, 0xFF	; 255
+  4a:	84 bb       	out	0x14, r24	; 20
+	   will divide clock by 1024 to count it so this gives
+	   us about 1 sec delay for a 4MHz clock)
+	*/
+
+	//OCR1A = 1			//used for debugging
+	OCR1A = 390;  		//tenth of a second delay
+  4c:	86 e8       	ldi	r24, 0x86	; 134
+  4e:	91 e0       	ldi	r25, 0x01	; 1
+  50:	9b bd       	out	0x2b, r25	; 43
+  52:	8a bd       	out	0x2a, r24	; 42
+
+	TIMSK = (1<<OCIE1A);	//interrupt on output compare match
+  54:	80 e4       	ldi	r24, 0x40	; 64
+  56:	89 bf       	out	0x39, r24	; 57
+	TCCR1B = (1<<CTC1);	//clear the counter on output compare match
+  58:	88 e0       	ldi	r24, 0x08	; 8
+  5a:	8e bd       	out	0x2e, r24	; 46
+
+	MCUCR = (1<<ISC11);	//INT1 triggered on falling edge
+  5c:	85 bf       	out	0x35, r24	; 53
+	GIFR = (1<<INTF1);	//Clear the INT1 flag
+  5e:	80 e8       	ldi	r24, 0x80	; 128
+  60:	8a bf       	out	0x3a, r24	; 58
+	GIMSK = (1<<INT1);	//Enable INT1
+  62:	8b bf       	out	0x3b, r24	; 59
+
+	/* Enable interrupts */
+	sei();
+  64:	78 94       	sei
+  66:	ff cf       	rjmp	.-2      	; 0x66 <__SREG__+0x27>
+
+00000068 <stopTimer>:
+}
+
+/* Save SREG Not necessary */
+
+void stopTimer(void){
+	TCCR1B = 0;
+  68:	1e bc       	out	0x2e, r1	; 46
+	run = 0;
+  6a:	10 92 62 00 	sts	0x0062, r1
+}
+  6e:	08 95       	ret
+
+00000070 <__vector_2>:
+
+ISR(INT1_vect){
+  70:	1f 92       	push	r1
+  72:	0f 92       	push	r0
+  74:	0f b6       	in	r0, 0x3f	; 63
+  76:	0f 92       	push	r0
+  78:	11 24       	eor	r1, r1
+  7a:	8f 93       	push	r24
+  7c:	9f 93       	push	r25
+	if(run == 0 && time != 0x99){	//not running and have more numbers to go
+  7e:	80 91 62 00 	lds	r24, 0x0062
+  82:	88 23       	and	r24, r24
+  84:	69 f4       	brne	.+26     	; 0xa0 <__vector_2+0x30>
+  86:	80 91 60 00 	lds	r24, 0x0060
+  8a:	90 91 61 00 	lds	r25, 0x0061
+  8e:	89 39       	cpi	r24, 0x99	; 153
+  90:	91 05       	cpc	r25, r1
+  92:	31 f0       	breq	.+12     	; 0xa0 <__vector_2+0x30>
+			TCCR1B = (1<<CTC1)|(1<<CS12)|(0<<CS11)|(1<<CS10);
+  94:	8d e0       	ldi	r24, 0x0D	; 13
+  96:	8e bd       	out	0x2e, r24	; 46
+			run = 1;
+  98:	81 e0       	ldi	r24, 0x01	; 1
+  9a:	80 93 62 00 	sts	0x0062, r24
+  9e:	03 c0       	rjmp	.+6      	; 0xa6 <__vector_2+0x36>
+}
+
+/* Save SREG Not necessary */
+
+void stopTimer(void){
+	TCCR1B = 0;
+  a0:	1e bc       	out	0x2e, r1	; 46
+	run = 0;
+  a2:	10 92 62 00 	sts	0x0062, r1
+			TCCR1B = (1<<CTC1)|(1<<CS12)|(0<<CS11)|(1<<CS10);
+			run = 1;
+	}
+	else
+		stopTimer();
+}
+  a6:	9f 91       	pop	r25
+  a8:	8f 91       	pop	r24
+  aa:	0f 90       	pop	r0
+  ac:	0f be       	out	0x3f, r0	; 63
+  ae:	0f 90       	pop	r0
+  b0:	1f 90       	pop	r1
+  b2:	18 95       	reti
+
+000000b4 <__vector_4>:
+
+ISR(TIMER1_COMPA_vect){
+  b4:	1f 92       	push	r1
+  b6:	0f 92       	push	r0
+  b8:	0f b6       	in	r0, 0x3f	; 63
+  ba:	0f 92       	push	r0
+  bc:	11 24       	eor	r1, r1
+  be:	2f 93       	push	r18
+  c0:	3f 93       	push	r19
+  c2:	8f 93       	push	r24
+  c4:	9f 93       	push	r25
+	if(run == 1 && time != 0x99){	//running and have more numbers to go
+  c6:	80 91 62 00 	lds	r24, 0x0062
+  ca:	81 30       	cpi	r24, 0x01	; 1
+  cc:	c9 f4       	brne	.+50     	; 0x100 <__vector_4+0x4c>
+  ce:	20 91 60 00 	lds	r18, 0x0060
+  d2:	30 91 61 00 	lds	r19, 0x0061
+  d6:	29 39       	cpi	r18, 0x99	; 153
+  d8:	31 05       	cpc	r19, r1
+  da:	91 f0       	breq	.+36     	; 0x100 <__vector_4+0x4c>
+		if( (time & 0x0F) >= 0x09)
+  dc:	82 2f       	mov	r24, r18
+  de:	93 2f       	mov	r25, r19
+  e0:	8f 70       	andi	r24, 0x0F	; 15
+  e2:	90 70       	andi	r25, 0x00	; 0
+  e4:	09 97       	sbiw	r24, 0x09	; 9
+  e6:	2c f0       	brlt	.+10     	; 0xf2 <__vector_4+0x3e>
+			time = (time & 0xF0) + 0x10; //clear right digit, carry to left
+  e8:	20 7f       	andi	r18, 0xF0	; 240
+  ea:	30 70       	andi	r19, 0x00	; 0
+  ec:	20 5f       	subi	r18, 0xF0	; 240
+  ee:	3f 4f       	sbci	r19, 0xFF	; 255
+  f0:	02 c0       	rjmp	.+4      	; 0xf6 <__vector_4+0x42>
+		else
+			time++;	//add one to units
+  f2:	2f 5f       	subi	r18, 0xFF	; 255
+  f4:	3f 4f       	sbci	r19, 0xFF	; 255
+  f6:	30 93 61 00 	sts	0x0061, r19
+  fa:	20 93 60 00 	sts	0x0060, r18
+  fe:	03 c0       	rjmp	.+6      	; 0x106 <__vector_4+0x52>
+}
+
+/* Save SREG Not necessary */
+
+void stopTimer(void){
+	TCCR1B = 0;
+ 100:	1e bc       	out	0x2e, r1	; 46
+	run = 0;
+ 102:	10 92 62 00 	sts	0x0062, r1
+			time++;	//add one to units
+	}
+	else	//either we're not supposed to be running or we've reached the end
+		stopTimer();
+
+	PORTC = time; //display the new time
+ 106:	80 91 60 00 	lds	r24, 0x0060
+ 10a:	85 bb       	out	0x15, r24	; 21
+}
+ 10c:	9f 91       	pop	r25
+ 10e:	8f 91       	pop	r24
+ 110:	3f 91       	pop	r19
+ 112:	2f 91       	pop	r18
+ 114:	0f 90       	pop	r0
+ 116:	0f be       	out	0x3f, r0	; 63
+ 118:	0f 90       	pop	r0
+ 11a:	1f 90       	pop	r1
+ 11c:	18 95       	reti
+
+0000011e <_exit>:
+ 11e:	f8 94       	cli
+
+00000120 <__stop_program>:
+ 120:	ff cf       	rjmp	.-2      	; 0x120 <__stop_program>

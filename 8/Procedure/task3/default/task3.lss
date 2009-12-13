@@ -1,0 +1,102 @@
+
+task3.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000004e  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  000000a2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000001b  00000000  00000000  000000c2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000076  00000000  00000000  000000dd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000041  00000000  00000000  00000153  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   00000087  00000000  00000000  00000194  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000020  00000000  00000000  0000021c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    00000082  00000000  00000000  0000023c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c c0       	rjmp	.+24     	; 0x1a <__ctors_end>
+   2:	13 c0       	rjmp	.+38     	; 0x2a <__bad_interrupt>
+   4:	12 c0       	rjmp	.+36     	; 0x2a <__bad_interrupt>
+   6:	11 c0       	rjmp	.+34     	; 0x2a <__bad_interrupt>
+   8:	10 c0       	rjmp	.+32     	; 0x2a <__bad_interrupt>
+   a:	0f c0       	rjmp	.+30     	; 0x2a <__bad_interrupt>
+   c:	0e c0       	rjmp	.+28     	; 0x2a <__bad_interrupt>
+   e:	0d c0       	rjmp	.+26     	; 0x2a <__bad_interrupt>
+  10:	0c c0       	rjmp	.+24     	; 0x2a <__bad_interrupt>
+  12:	0b c0       	rjmp	.+22     	; 0x2a <__bad_interrupt>
+  14:	0a c0       	rjmp	.+20     	; 0x2a <__bad_interrupt>
+  16:	09 c0       	rjmp	.+18     	; 0x2a <__bad_interrupt>
+  18:	08 c0       	rjmp	.+16     	; 0x2a <__bad_interrupt>
+
+0000001a <__ctors_end>:
+  1a:	11 24       	eor	r1, r1
+  1c:	1f be       	out	0x3f, r1	; 63
+  1e:	cf e5       	ldi	r28, 0x5F	; 95
+  20:	d2 e0       	ldi	r29, 0x02	; 2
+  22:	de bf       	out	0x3e, r29	; 62
+  24:	cd bf       	out	0x3d, r28	; 61
+  26:	02 d0       	rcall	.+4      	; 0x2c <main>
+  28:	10 c0       	rjmp	.+32     	; 0x4a <_exit>
+
+0000002a <__bad_interrupt>:
+  2a:	ea cf       	rjmp	.-44     	; 0x0 <__vectors>
+
+0000002c <main>:
+	** DDD4 is equal to the value 4. (These constants
+	** are defined in a header file included by avr/io.h.)s
+	** The names are the same as those given in the
+	** datasheet for each bit position.
+	*/
+	DDRD = (1<<DDD5) | (1<<DDD4);
+  2c:	80 e3       	ldi	r24, 0x30	; 48
+  2e:	81 bb       	out	0x11, r24	; 17
+
+	/* Set PORT D Pin 4 output to zero */
+	/*<-YOUR CODE HERE->*/
+	PORTD = 0; /* both 4 and 5 will go to 0 but OK */
+  30:	12 ba       	out	0x12, r1	; 18
+
+	/* Set OC1A pin to toggle */
+	/*<-YOUR CODE HERE->*/
+	TCCR1A = 0x40;
+  32:	80 e4       	ldi	r24, 0x40	; 64
+  34:	8f bd       	out	0x2f, r24	; 47
+
+	/* Set Output Compare 1 value */
+    OCR1A = 1999;
+  36:	8f ec       	ldi	r24, 0xCF	; 207
+  38:	97 e0       	ldi	r25, 0x07	; 7
+  3a:	9b bd       	out	0x2b, r25	; 43
+  3c:	8a bd       	out	0x2a, r24	; 42
+	*  but C allows us to treat OCR1A as a single 16 bit register
+	*/
+
+	/* Set Timer 1 to clear on compare match */
+	/*<-YOUR CODE HERE->*/
+	TCCR1B = 0x08;
+  3e:	88 e0       	ldi	r24, 0x08	; 8
+  40:	8e bd       	out	0x2e, r24	; 46
+
+
+	/* Start Timer 1 */
+	/*<-YOUR CODE HERE->*/
+	TCCR1B |= 0x01;
+  42:	8e b5       	in	r24, 0x2e	; 46
+  44:	81 60       	ori	r24, 0x01	; 1
+  46:	8e bd       	out	0x2e, r24	; 46
+  48:	ff cf       	rjmp	.-2      	; 0x48 <__SREG__+0x9>
+
+0000004a <_exit>:
+  4a:	f8 94       	cli
+
+0000004c <__stop_program>:
+  4c:	ff cf       	rjmp	.-2      	; 0x4c <__stop_program>

@@ -1,0 +1,5 @@
+Address = 0x0000002c  File:line:col:begin = E:\classes\csse1000\Prac\7\Procedure\prac7-1\default/../prac7-1.c:10:0:-1
+Address = 0x0000002c  File:line:col:begin = E:\classes\csse1000\Prac\7\Procedure\prac7-1\default/../prac7-1.c:14:0:-1
+Address = 0x00000030  File:line:col:begin = E:\classes\csse1000\Prac\7\Procedure\prac7-1\default/../prac7-1.c:17:0:-1
+Address = 0x00000032  File:line:col:begin = E:\classes\csse1000\Prac\7\Procedure\prac7-1\default/../prac7-1.c:33:0:-1
+Address = 0x0000003a  File:line:col:begin = E:\classes\csse1000\Prac\7\Procedure\prac7-1\default/../prac7-1.c:33:0:-1

@@ -1,0 +1,250 @@
+
+tutortask.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000013c  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  00000190  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000001b  00000000  00000000  000001b0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000076  00000000  00000000  000001cb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000041  00000000  00000000  00000241  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000000fb  00000000  00000000  00000282  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000020  00000000  00000000  00000380  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    0000008a  00000000  00000000  000003a0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c c0       	rjmp	.+24     	; 0x1a <__ctors_end>
+   2:	13 c0       	rjmp	.+38     	; 0x2a <__bad_interrupt>
+   4:	12 c0       	rjmp	.+36     	; 0x2a <__bad_interrupt>
+   6:	11 c0       	rjmp	.+34     	; 0x2a <__bad_interrupt>
+   8:	10 c0       	rjmp	.+32     	; 0x2a <__bad_interrupt>
+   a:	0f c0       	rjmp	.+30     	; 0x2a <__bad_interrupt>
+   c:	0e c0       	rjmp	.+28     	; 0x2a <__bad_interrupt>
+   e:	0d c0       	rjmp	.+26     	; 0x2a <__bad_interrupt>
+  10:	0c c0       	rjmp	.+24     	; 0x2a <__bad_interrupt>
+  12:	0b c0       	rjmp	.+22     	; 0x2a <__bad_interrupt>
+  14:	0a c0       	rjmp	.+20     	; 0x2a <__bad_interrupt>
+  16:	09 c0       	rjmp	.+18     	; 0x2a <__bad_interrupt>
+  18:	08 c0       	rjmp	.+16     	; 0x2a <__bad_interrupt>
+
+0000001a <__ctors_end>:
+  1a:	11 24       	eor	r1, r1
+  1c:	1f be       	out	0x3f, r1	; 63
+  1e:	cf e5       	ldi	r28, 0x5F	; 95
+  20:	d2 e0       	ldi	r29, 0x02	; 2
+  22:	de bf       	out	0x3e, r29	; 62
+  24:	cd bf       	out	0x3d, r28	; 61
+  26:	02 d0       	rcall	.+4      	; 0x2c <main>
+  28:	87 c0       	rjmp	.+270    	; 0x138 <_exit>
+
+0000002a <__bad_interrupt>:
+  2a:	ea cf       	rjmp	.-44     	; 0x0 <__vectors>
+
+0000002c <main>:
+
+/*
+ * main -- Main program.
+ */
+int main(void)
+{
+  2c:	df 93       	push	r29
+  2e:	cf 93       	push	r28
+  30:	cd b7       	in	r28, 0x3d	; 61
+  32:	de b7       	in	r29, 0x3e	; 62
+	** DDD4 is equal to the value 4. (These constants
+	** are defined in a header file included by avr/io.h.)s
+	** The names are the same as those given in the
+	** datasheet for each bit position.
+	*/
+	DDRD = (1<<DDD5) | (1<<DDD4);
+  34:	e1 e3       	ldi	r30, 0x31	; 49
+  36:	f0 e0       	ldi	r31, 0x00	; 0
+  38:	80 e3       	ldi	r24, 0x30	; 48
+  3a:	80 83       	st	Z, r24
+
+	/* Set PORT D Pin 4 output to zero */
+	/*<-YOUR CODE HERE->*/
+	PORTD = 0; /* both 4 and 5 will go to 0 but OK */
+  3c:	e2 e3       	ldi	r30, 0x32	; 50
+  3e:	f0 e0       	ldi	r31, 0x00	; 0
+  40:	10 82       	st	Z, r1
+
+	/* Set OC1A pin to toggle */
+	/*<-YOUR CODE HERE->*/
+	TCCR1A = 0x40;
+  42:	ef e4       	ldi	r30, 0x4F	; 79
+  44:	f0 e0       	ldi	r31, 0x00	; 0
+  46:	80 e4       	ldi	r24, 0x40	; 64
+  48:	80 83       	st	Z, r24
+
+	/* Set Output Compare 1 value */
+    OCR1A = 1999;
+  4a:	ea e4       	ldi	r30, 0x4A	; 74
+  4c:	f0 e0       	ldi	r31, 0x00	; 0
+  4e:	8f ec       	ldi	r24, 0xCF	; 207
+  50:	97 e0       	ldi	r25, 0x07	; 7
+  52:	91 83       	std	Z+1, r25	; 0x01
+  54:	80 83       	st	Z, r24
+	*  but C allows us to treat OCR1A as a single 16 bit register
+	*/
+
+	/* Set Timer 1 to clear on compare match */
+	/*<-YOUR CODE HERE->*/
+	TCCR1B = 0x08;
+  56:	ee e4       	ldi	r30, 0x4E	; 78
+  58:	f0 e0       	ldi	r31, 0x00	; 0
+  5a:	88 e0       	ldi	r24, 0x08	; 8
+  5c:	80 83       	st	Z, r24
+
+
+	/* initialize timer as OFF */
+	TCCR1B |= 0x00;
+  5e:	ae e4       	ldi	r26, 0x4E	; 78
+  60:	b0 e0       	ldi	r27, 0x00	; 0
+  62:	ee e4       	ldi	r30, 0x4E	; 78
+  64:	f0 e0       	ldi	r31, 0x00	; 0
+  66:	80 81       	ld	r24, Z
+  68:	8c 93       	st	X, r24
+
+	/* set PORT A direction to input */
+	DDRA = 0x00;
+  6a:	ea e3       	ldi	r30, 0x3A	; 58
+  6c:	f0 e0       	ldi	r31, 0x00	; 0
+  6e:	10 82       	st	Z, r1
+
+	/* Sit back and let it happen - the hardware takes care of it all */
+	while(1){
+		if((PINA & 0x01) == 0x00){
+  70:	e9 e3       	ldi	r30, 0x39	; 57
+  72:	f0 e0       	ldi	r31, 0x00	; 0
+  74:	80 81       	ld	r24, Z
+  76:	88 2f       	mov	r24, r24
+  78:	90 e0       	ldi	r25, 0x00	; 0
+  7a:	81 70       	andi	r24, 0x01	; 1
+  7c:	90 70       	andi	r25, 0x00	; 0
+  7e:	00 97       	sbiw	r24, 0x00	; 0
+  80:	71 f4       	brne	.+28     	; 0x9e <__SREG__+0x5f>
+			TCCR1B |= 0x01; /* set timer to toggle on clock */
+  82:	ae e4       	ldi	r26, 0x4E	; 78
+  84:	b0 e0       	ldi	r27, 0x00	; 0
+  86:	ee e4       	ldi	r30, 0x4E	; 78
+  88:	f0 e0       	ldi	r31, 0x00	; 0
+  8a:	80 81       	ld	r24, Z
+  8c:	81 60       	ori	r24, 0x01	; 1
+  8e:	8c 93       	st	X, r24
+			OCR1A = 3033;
+  90:	ea e4       	ldi	r30, 0x4A	; 74
+  92:	f0 e0       	ldi	r31, 0x00	; 0
+  94:	89 ed       	ldi	r24, 0xD9	; 217
+  96:	9b e0       	ldi	r25, 0x0B	; 11
+  98:	91 83       	std	Z+1, r25	; 0x01
+  9a:	80 83       	st	Z, r24
+  9c:	e9 cf       	rjmp	.-46     	; 0x70 <__SREG__+0x31>
+		}
+		else if((PINA & 0x02) == 0x00){
+  9e:	e9 e3       	ldi	r30, 0x39	; 57
+  a0:	f0 e0       	ldi	r31, 0x00	; 0
+  a2:	80 81       	ld	r24, Z
+  a4:	88 2f       	mov	r24, r24
+  a6:	90 e0       	ldi	r25, 0x00	; 0
+  a8:	82 70       	andi	r24, 0x02	; 2
+  aa:	90 70       	andi	r25, 0x00	; 0
+  ac:	00 97       	sbiw	r24, 0x00	; 0
+  ae:	71 f4       	brne	.+28     	; 0xcc <__SREG__+0x8d>
+			TCCR1B |= 0x01; /* set timer to toggle on clock */
+  b0:	ae e4       	ldi	r26, 0x4E	; 78
+  b2:	b0 e0       	ldi	r27, 0x00	; 0
+  b4:	ee e4       	ldi	r30, 0x4E	; 78
+  b6:	f0 e0       	ldi	r31, 0x00	; 0
+  b8:	80 81       	ld	r24, Z
+  ba:	81 60       	ori	r24, 0x01	; 1
+  bc:	8c 93       	st	X, r24
+			OCR1A = 3607;
+  be:	ea e4       	ldi	r30, 0x4A	; 74
+  c0:	f0 e0       	ldi	r31, 0x00	; 0
+  c2:	87 e1       	ldi	r24, 0x17	; 23
+  c4:	9e e0       	ldi	r25, 0x0E	; 14
+  c6:	91 83       	std	Z+1, r25	; 0x01
+  c8:	80 83       	st	Z, r24
+  ca:	d2 cf       	rjmp	.-92     	; 0x70 <__SREG__+0x31>
+		}
+		else if((PINA & 0x04) == 0x00){
+  cc:	e9 e3       	ldi	r30, 0x39	; 57
+  ce:	f0 e0       	ldi	r31, 0x00	; 0
+  d0:	80 81       	ld	r24, Z
+  d2:	88 2f       	mov	r24, r24
+  d4:	90 e0       	ldi	r25, 0x00	; 0
+  d6:	84 70       	andi	r24, 0x04	; 4
+  d8:	90 70       	andi	r25, 0x00	; 0
+  da:	00 97       	sbiw	r24, 0x00	; 0
+  dc:	71 f4       	brne	.+28     	; 0xfa <__SREG__+0xbb>
+			TCCR1B |= 0x01; /* set timer to toggle on clock */
+  de:	ae e4       	ldi	r26, 0x4E	; 78
+  e0:	b0 e0       	ldi	r27, 0x00	; 0
+  e2:	ee e4       	ldi	r30, 0x4E	; 78
+  e4:	f0 e0       	ldi	r31, 0x00	; 0
+  e6:	80 81       	ld	r24, Z
+  e8:	81 60       	ori	r24, 0x01	; 1
+  ea:	8c 93       	st	X, r24
+			OCR1A = 4049;
+  ec:	ea e4       	ldi	r30, 0x4A	; 74
+  ee:	f0 e0       	ldi	r31, 0x00	; 0
+  f0:	81 ed       	ldi	r24, 0xD1	; 209
+  f2:	9f e0       	ldi	r25, 0x0F	; 15
+  f4:	91 83       	std	Z+1, r25	; 0x01
+  f6:	80 83       	st	Z, r24
+  f8:	bb cf       	rjmp	.-138    	; 0x70 <__SREG__+0x31>
+		}
+		else if((PINA & 0x08) == 0x00){
+  fa:	e9 e3       	ldi	r30, 0x39	; 57
+  fc:	f0 e0       	ldi	r31, 0x00	; 0
+  fe:	80 81       	ld	r24, Z
+ 100:	88 2f       	mov	r24, r24
+ 102:	90 e0       	ldi	r25, 0x00	; 0
+ 104:	88 70       	andi	r24, 0x08	; 8
+ 106:	90 70       	andi	r25, 0x00	; 0
+ 108:	00 97       	sbiw	r24, 0x00	; 0
+ 10a:	71 f4       	brne	.+28     	; 0x128 <__SREG__+0xe9>
+			TCCR1B |= 0x01; /* set timer to toggle on clock */
+ 10c:	ae e4       	ldi	r26, 0x4E	; 78
+ 10e:	b0 e0       	ldi	r27, 0x00	; 0
+ 110:	ee e4       	ldi	r30, 0x4E	; 78
+ 112:	f0 e0       	ldi	r31, 0x00	; 0
+ 114:	80 81       	ld	r24, Z
+ 116:	81 60       	ori	r24, 0x01	; 1
+ 118:	8c 93       	st	X, r24
+			OCR1A = 4545;
+ 11a:	ea e4       	ldi	r30, 0x4A	; 74
+ 11c:	f0 e0       	ldi	r31, 0x00	; 0
+ 11e:	81 ec       	ldi	r24, 0xC1	; 193
+ 120:	91 e1       	ldi	r25, 0x11	; 17
+ 122:	91 83       	std	Z+1, r25	; 0x01
+ 124:	80 83       	st	Z, r24
+ 126:	a4 cf       	rjmp	.-184    	; 0x70 <__SREG__+0x31>
+		}
+		else
+			TCCR1B &= 0xFE;
+ 128:	ae e4       	ldi	r26, 0x4E	; 78
+ 12a:	b0 e0       	ldi	r27, 0x00	; 0
+ 12c:	ee e4       	ldi	r30, 0x4E	; 78
+ 12e:	f0 e0       	ldi	r31, 0x00	; 0
+ 130:	80 81       	ld	r24, Z
+ 132:	8e 7f       	andi	r24, 0xFE	; 254
+ 134:	8c 93       	st	X, r24
+ 136:	9c cf       	rjmp	.-200    	; 0x70 <__SREG__+0x31>
+
+00000138 <_exit>:
+ 138:	f8 94       	cli
+
+0000013a <__stop_program>:
+ 13a:	ff cf       	rjmp	.-2      	; 0x13a <__stop_program>

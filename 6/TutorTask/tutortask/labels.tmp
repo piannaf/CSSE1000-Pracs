@@ -1,0 +1,32 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.30</VERSION>
+ <DEVICE>AT90S8515</DEVICE>
+ <WORKING_DIR>D:\classes\csse1000\Prac\6\TutorTask\tutortask</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools4.13\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools4.13\AvrAssembler2\Appnotes\8515def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>29</LINE></RESET>
+  <Initialize><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>64</LINE></Initialize>
+  <ButtonWaitPress><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>50</LINE></ButtonWaitPress>
+  <ButtonWaitRel><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>57</LINE></ButtonWaitRel>
+  <SetHex><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>105</LINE></SetHex>
+  <DisplayHex><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>75</LINE></DisplayHex>
+  <SetStatus><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>87</LINE></SetStatus>
+  <Open><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>100</LINE></Open>
+  <Close><FILE>D:\classes\csse1000\Prac\6\TutorTask\tutortask\tutortask.asm</FILE><LINE>95</LINE></Close>
+ </LABELS>
+</ASSEMBLER_INFO>

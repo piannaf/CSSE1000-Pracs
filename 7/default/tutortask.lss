@@ -1,0 +1,131 @@
+
+tutortask.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000064  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  000000b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000001b  00000000  00000000  000000d8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000084  00000000  00000000  000000f3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000050  00000000  00000000  00000177  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000000b3  00000000  00000000  000001c7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000020  00000000  00000000  0000027c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    0000007c  00000000  00000000  0000029c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c c0       	rjmp	.+24     	; 0x1a <__ctors_end>
+   2:	13 c0       	rjmp	.+38     	; 0x2a <__bad_interrupt>
+   4:	12 c0       	rjmp	.+36     	; 0x2a <__bad_interrupt>
+   6:	11 c0       	rjmp	.+34     	; 0x2a <__bad_interrupt>
+   8:	10 c0       	rjmp	.+32     	; 0x2a <__bad_interrupt>
+   a:	0f c0       	rjmp	.+30     	; 0x2a <__bad_interrupt>
+   c:	0e c0       	rjmp	.+28     	; 0x2a <__bad_interrupt>
+   e:	0d c0       	rjmp	.+26     	; 0x2a <__bad_interrupt>
+  10:	0c c0       	rjmp	.+24     	; 0x2a <__bad_interrupt>
+  12:	0b c0       	rjmp	.+22     	; 0x2a <__bad_interrupt>
+  14:	0a c0       	rjmp	.+20     	; 0x2a <__bad_interrupt>
+  16:	09 c0       	rjmp	.+18     	; 0x2a <__bad_interrupt>
+  18:	08 c0       	rjmp	.+16     	; 0x2a <__bad_interrupt>
+
+0000001a <__ctors_end>:
+  1a:	11 24       	eor	r1, r1
+  1c:	1f be       	out	0x3f, r1	; 63
+  1e:	cf e5       	ldi	r28, 0x5F	; 95
+  20:	d2 e0       	ldi	r29, 0x02	; 2
+  22:	de bf       	out	0x3e, r29	; 62
+  24:	cd bf       	out	0x3d, r28	; 61
+  26:	02 d0       	rcall	.+4      	; 0x2c <main>
+  28:	1b c0       	rjmp	.+54     	; 0x60 <_exit>
+
+0000002a <__bad_interrupt>:
+  2a:	ea cf       	rjmp	.-44     	; 0x0 <__vectors>
+
+0000002c <main>:
+int main(void)
+{
+	unsigned char input = 0x00;
+
+	/* Set PORT A direction to output */
+	DDRA = 0xFF; 				// Left and Right Digits
+  2c:	8f ef       	ldi	r24, 0xFF	; 255
+  2e:	8a bb       	out	0x1a, r24	; 26
+
+	/* Set PORTC pins 6-3, 0 to input with others output*/
+	DDRC = 0x06;
+  30:	86 e0       	ldi	r24, 0x06	; 6
+  32:	84 bb       	out	0x14, r24	; 20
+  34:	90 e0       	ldi	r25, 0x00	; 0
+
+		/* set status */
+		if( input == 0x38 )
+			PORTC = 0x02;		// Open
+		else
+			PORTC = 0x04;		// Closed
+  36:	34 e0       	ldi	r19, 0x04	; 4
+		/* output the inputed combination */
+		PORTA = input;
+
+		/* set status */
+		if( input == 0x38 )
+			PORTC = 0x02;		// Open
+  38:	22 e0       	ldi	r18, 0x02	; 2
+	/* Set PORTC pins 6-3, 0 to input with others output*/
+	DDRC = 0x06;
+
+	while(1) {
+		/* output the inputed combination */
+		PORTA = input;
+  3a:	9b bb       	out	0x1b, r25	; 27
+
+		/* set status */
+		if( input == 0x38 )
+  3c:	98 33       	cpi	r25, 0x38	; 56
+  3e:	11 f4       	brne	.+4      	; 0x44 <__SREG__+0x5>
+			PORTC = 0x02;		// Open
+  40:	25 bb       	out	0x15, r18	; 21
+  42:	01 c0       	rjmp	.+2      	; 0x46 <__SREG__+0x7>
+		else
+			PORTC = 0x04;		// Closed
+  44:	35 bb       	out	0x15, r19	; 21
+
+		/* Wait for button to be pushed */
+		while( (PINC & 0x01) ){
+  46:	98 99       	sbic	0x13, 0	; 19
+  48:	fe cf       	rjmp	.-4      	; 0x46 <__SREG__+0x7>
+		}
+
+		/* Wait for button to be released */
+		while( !(PINC & 0x01) ){
+  4a:	98 9b       	sbis	0x13, 0	; 19
+  4c:	fe cf       	rjmp	.-4      	; 0x4a <__SREG__+0xb>
+
+		/* set input */
+		input = input << 4; 	// shift left digit to right digit
+								// note, the left digit will be 0 after this operation
+
+		input |= (PINC >> 3) & 0x0F;
+  4e:	83 b3       	in	r24, 0x13	; 19
+  50:	92 95       	swap	r25
+  52:	90 7f       	andi	r25, 0xF0	; 240
+  54:	86 95       	lsr	r24
+  56:	86 95       	lsr	r24
+  58:	86 95       	lsr	r24
+  5a:	8f 70       	andi	r24, 0x0F	; 15
+  5c:	98 2b       	or	r25, r24
+  5e:	ed cf       	rjmp	.-38     	; 0x3a <__CCP__+0x6>
+
+00000060 <_exit>:
+  60:	f8 94       	cli
+
+00000062 <__stop_program>:
+  62:	ff cf       	rjmp	.-2      	; 0x62 <__stop_program>

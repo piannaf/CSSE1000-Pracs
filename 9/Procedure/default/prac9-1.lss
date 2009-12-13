@@ -1,0 +1,415 @@
+
+prac9-1.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000001f4  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000046  00800060  000001f4  00000288  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000042  008000a6  008000a6  000002ce  2**0
+                  ALLOC
+  3 .debug_aranges 00000020  00000000  00000000  000002ce  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_pubnames 00000096  00000000  00000000  000002ee  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000001e3  00000000  00000000  00000384  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000127  00000000  00000000  00000567  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000018e  00000000  00000000  0000068e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000060  00000000  00000000  0000081c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000000d8  00000000  00000000  0000087c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000087  00000000  00000000  00000954  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c c0       	rjmp	.+24     	; 0x1a <__ctors_end>
+   2:	27 c0       	rjmp	.+78     	; 0x52 <__bad_interrupt>
+   4:	26 c0       	rjmp	.+76     	; 0x52 <__bad_interrupt>
+   6:	25 c0       	rjmp	.+74     	; 0x52 <__bad_interrupt>
+   8:	24 c0       	rjmp	.+72     	; 0x52 <__bad_interrupt>
+   a:	23 c0       	rjmp	.+70     	; 0x52 <__bad_interrupt>
+   c:	22 c0       	rjmp	.+68     	; 0x52 <__bad_interrupt>
+   e:	21 c0       	rjmp	.+66     	; 0x52 <__bad_interrupt>
+  10:	20 c0       	rjmp	.+64     	; 0x52 <__bad_interrupt>
+  12:	a4 c0       	rjmp	.+328    	; 0x15c <__vector_9>
+  14:	6a c0       	rjmp	.+212    	; 0xea <__vector_10>
+  16:	1d c0       	rjmp	.+58     	; 0x52 <__bad_interrupt>
+  18:	1c c0       	rjmp	.+56     	; 0x52 <__bad_interrupt>
+
+0000001a <__ctors_end>:
+  1a:	11 24       	eor	r1, r1
+  1c:	1f be       	out	0x3f, r1	; 63
+  1e:	cf e5       	ldi	r28, 0x5F	; 95
+  20:	d2 e0       	ldi	r29, 0x02	; 2
+  22:	de bf       	out	0x3e, r29	; 62
+  24:	cd bf       	out	0x3d, r28	; 61
+
+00000026 <__do_copy_data>:
+  26:	10 e0       	ldi	r17, 0x00	; 0
+  28:	a0 e6       	ldi	r26, 0x60	; 96
+  2a:	b0 e0       	ldi	r27, 0x00	; 0
+  2c:	e4 ef       	ldi	r30, 0xF4	; 244
+  2e:	f1 e0       	ldi	r31, 0x01	; 1
+  30:	03 c0       	rjmp	.+6      	; 0x38 <.do_copy_data_start>
+
+00000032 <.do_copy_data_loop>:
+  32:	c8 95       	lpm
+  34:	31 96       	adiw	r30, 0x01	; 1
+  36:	0d 92       	st	X+, r0
+
+00000038 <.do_copy_data_start>:
+  38:	a6 3a       	cpi	r26, 0xA6	; 166
+  3a:	b1 07       	cpc	r27, r17
+  3c:	d1 f7       	brne	.-12     	; 0x32 <.do_copy_data_loop>
+
+0000003e <__do_clear_bss>:
+  3e:	10 e0       	ldi	r17, 0x00	; 0
+  40:	a6 ea       	ldi	r26, 0xA6	; 166
+  42:	b0 e0       	ldi	r27, 0x00	; 0
+  44:	01 c0       	rjmp	.+2      	; 0x48 <.do_clear_bss_start>
+
+00000046 <.do_clear_bss_loop>:
+  46:	1d 92       	st	X+, r1
+
+00000048 <.do_clear_bss_start>:
+  48:	a8 3e       	cpi	r26, 0xE8	; 232
+  4a:	b1 07       	cpc	r27, r17
+  4c:	e1 f7       	brne	.-8      	; 0x46 <.do_clear_bss_loop>
+  4e:	02 d0       	rcall	.+4      	; 0x54 <main>
+  50:	cf c0       	rjmp	.+414    	; 0x1f0 <_exit>
+
+00000052 <__bad_interrupt>:
+  52:	d6 cf       	rjmp	.-84     	; 0x0 <__vectors>
+
+00000054 <main>:
+int main(void)
+{
+	/*
+	** Initialise our buffer
+	*/
+	insert_pos = 0;
+  54:	10 92 e7 00 	sts	0x00E7, r1
+	bytes_in_buffer = 0;
+  58:	10 92 a6 00 	sts	0x00A6, r1
+	** to see what value to write to the UBRR register when we 
+	** have a 4MHz clock
+	*/
+	//UBRR = 12;
+
+	UBRR = 1; //For testing a higher baud rate
+  5c:	81 e0       	ldi	r24, 0x01	; 1
+  5e:	89 b9       	out	0x09, r24	; 9
+	/* UCR = UART Controll Register
+	   RXEN = Reciever Enable, TXEN, Transmitter Enable
+	   UDRIE = Data Register Empty Interrupt Enable
+	   RXCIE = Receive Complete Interrupt Enable
+	*/
+	UCR = (1<<RXEN)|(1<<TXEN)|(1<<UDRIE)|(1<<RXCIE);
+  60:	88 eb       	ldi	r24, 0xB8	; 184
+  62:	8a b9       	out	0x0a, r24	; 10
+
+	/* Enable interrupts */
+	sei();
+  64:	78 94       	sei
+  66:	ff cf       	rjmp	.-2      	; 0x66 <main+0x12>
+
+00000068 <output_char>:
+** output_char
+**
+** Procedure to output a character (by adding it to the outgoing buffer)
+** (The characters will get consumed by an interrupt handler (see below).)
+*/
+void output_char(char c) {
+  68:	98 2f       	mov	r25, r24
+	** character position. If this is beyond the end of the buffer
+	** we wrap around back to the beginning of the buffer */
+	/* NOTE: this only gets executed within an interrupt handler
+	** so we can be guaranteed uninterrupted access to the buffer.
+	*/
+	if(bytes_in_buffer < BUFFER_SIZE) {
+  6a:	80 91 a6 00 	lds	r24, 0x00A6
+  6e:	80 34       	cpi	r24, 0x40	; 64
+  70:	a8 f4       	brcc	.+42     	; 0x9c <output_char+0x34>
+		/* We have room to add this byte */
+		buffer[insert_pos++] = c;
+  72:	80 91 e7 00 	lds	r24, 0x00E7
+  76:	e8 2f       	mov	r30, r24
+  78:	f0 e0       	ldi	r31, 0x00	; 0
+  7a:	e9 55       	subi	r30, 0x59	; 89
+  7c:	ff 4f       	sbci	r31, 0xFF	; 255
+  7e:	90 83       	st	Z, r25
+  80:	8f 5f       	subi	r24, 0xFF	; 255
+  82:	80 93 e7 00 	sts	0x00E7, r24
+		bytes_in_buffer++;
+  86:	80 91 a6 00 	lds	r24, 0x00A6
+  8a:	8f 5f       	subi	r24, 0xFF	; 255
+  8c:	80 93 a6 00 	sts	0x00A6, r24
+		if(insert_pos == BUFFER_SIZE) {
+  90:	80 91 e7 00 	lds	r24, 0x00E7
+  94:	80 34       	cpi	r24, 0x40	; 64
+  96:	11 f4       	brne	.+4      	; 0x9c <output_char+0x34>
+			/* Wrap around buffer pointer if necessary */
+			insert_pos = 0;
+  98:	10 92 e7 00 	sts	0x00E7, r1
+  9c:	08 95       	ret
+
+0000009e <output_string>:
+**
+** Procedure to output a string (by adding it to the outgoing buffer
+** character by character). We iterate over all characters in the
+** string. (Remember, strings are null-terminated.)
+*/
+void output_string(char* str) {
+  9e:	48 2f       	mov	r20, r24
+  a0:	59 2f       	mov	r21, r25
+  a2:	20 e0       	ldi	r18, 0x00	; 0
+  a4:	1a c0       	rjmp	.+52     	; 0xda <output_string+0x3c>
+	** character position. If this is beyond the end of the buffer
+	** we wrap around back to the beginning of the buffer */
+	/* NOTE: this only gets executed within an interrupt handler
+	** so we can be guaranteed uninterrupted access to the buffer.
+	*/
+	if(bytes_in_buffer < BUFFER_SIZE) {
+  a6:	80 91 a6 00 	lds	r24, 0x00A6
+  aa:	80 34       	cpi	r24, 0x40	; 64
+  ac:	a8 f4       	brcc	.+42     	; 0xd8 <output_string+0x3a>
+		/* We have room to add this byte */
+		buffer[insert_pos++] = c;
+  ae:	80 91 e7 00 	lds	r24, 0x00E7
+  b2:	e8 2f       	mov	r30, r24
+  b4:	f0 e0       	ldi	r31, 0x00	; 0
+  b6:	e9 55       	subi	r30, 0x59	; 89
+  b8:	ff 4f       	sbci	r31, 0xFF	; 255
+  ba:	30 83       	st	Z, r19
+  bc:	8f 5f       	subi	r24, 0xFF	; 255
+  be:	80 93 e7 00 	sts	0x00E7, r24
+		bytes_in_buffer++;
+  c2:	80 91 a6 00 	lds	r24, 0x00A6
+  c6:	8f 5f       	subi	r24, 0xFF	; 255
+  c8:	80 93 a6 00 	sts	0x00A6, r24
+		if(insert_pos == BUFFER_SIZE) {
+  cc:	80 91 e7 00 	lds	r24, 0x00E7
+  d0:	80 34       	cpi	r24, 0x40	; 64
+  d2:	11 f4       	brne	.+4      	; 0xd8 <output_string+0x3a>
+			/* Wrap around buffer pointer if necessary */
+			insert_pos = 0;
+  d4:	10 92 e7 00 	sts	0x00E7, r1
+** character by character). We iterate over all characters in the
+** string. (Remember, strings are null-terminated.)
+*/
+void output_string(char* str) {
+	unsigned char i;	/* index into the string */
+	for(i=0; str[i] != 0; i++) {
+  d8:	2f 5f       	subi	r18, 0xFF	; 255
+  da:	e4 2f       	mov	r30, r20
+  dc:	f5 2f       	mov	r31, r21
+  de:	e2 0f       	add	r30, r18
+  e0:	f1 1d       	adc	r31, r1
+  e2:	30 81       	ld	r19, Z
+  e4:	33 23       	and	r19, r19
+  e6:	f9 f6       	brne	.-66     	; 0xa6 <output_string+0x8>
+		output_char(str[i]);
+	}
+}
+  e8:	08 95       	ret
+
+000000ea <__vector_10>:
+/*
+ * Define the interrupt handler for UART Data Register Empty (i.e. 
+ * another character can be taken from our buffer and written out)
+ */
+
+ISR(UART_UDRE_vect) {
+  ea:	1f 92       	push	r1
+  ec:	0f 92       	push	r0
+  ee:	0f b6       	in	r0, 0x3f	; 63
+  f0:	0f 92       	push	r0
+  f2:	11 24       	eor	r1, r1
+  f4:	2f 93       	push	r18
+  f6:	8f 93       	push	r24
+  f8:	9f 93       	push	r25
+  fa:	ef 93       	push	r30
+  fc:	ff 93       	push	r31
+	/* Check if we have data in our buffer */
+	if(bytes_in_buffer > 0) {
+  fe:	80 91 a6 00 	lds	r24, 0x00A6
+ 102:	88 23       	and	r24, r24
+ 104:	09 f1       	breq	.+66     	; 0x148 <__vector_10+0x5e>
+		** one which is "bytes_in_buffer" characters before the 
+		** insert_pos (taking into account that we may 
+		** need to wrap around to the end of the buffer).
+		*/
+		char c;
+		if(insert_pos - bytes_in_buffer < 0) {
+ 106:	80 91 e7 00 	lds	r24, 0x00E7
+ 10a:	20 91 a6 00 	lds	r18, 0x00A6
+ 10e:	90 e0       	ldi	r25, 0x00	; 0
+ 110:	82 1b       	sub	r24, r18
+ 112:	91 09       	sbc	r25, r1
+ 114:	97 ff       	sbrs	r25, 7
+ 116:	08 c0       	rjmp	.+16     	; 0x128 <__vector_10+0x3e>
+			/* Need to wrap around */
+			c = buffer[insert_pos - bytes_in_buffer
+ 118:	e0 91 e7 00 	lds	r30, 0x00E7
+ 11c:	80 91 a6 00 	lds	r24, 0x00A6
+ 120:	f0 e0       	ldi	r31, 0x00	; 0
+ 122:	e0 5c       	subi	r30, 0xC0	; 192
+ 124:	ff 4f       	sbci	r31, 0xFF	; 255
+ 126:	05 c0       	rjmp	.+10     	; 0x132 <__vector_10+0x48>
+				+ BUFFER_SIZE];
+		} else {
+			c = buffer[insert_pos - bytes_in_buffer];
+ 128:	e0 91 e7 00 	lds	r30, 0x00E7
+ 12c:	80 91 a6 00 	lds	r24, 0x00A6
+ 130:	f0 e0       	ldi	r31, 0x00	; 0
+ 132:	e8 1b       	sub	r30, r24
+ 134:	f1 09       	sbc	r31, r1
+ 136:	e9 55       	subi	r30, 0x59	; 89
+ 138:	ff 4f       	sbci	r31, 0xFF	; 255
+ 13a:	e0 81       	ld	r30, Z
+		}
+		/* Decrement our count of the number of bytes in the 
+		** buffer 
+		*/
+		bytes_in_buffer--;
+ 13c:	80 91 a6 00 	lds	r24, 0x00A6
+ 140:	81 50       	subi	r24, 0x01	; 1
+ 142:	80 93 a6 00 	sts	0x00A6, r24
+		
+		/* Output the character via the UART */
+		UDR = c;
+ 146:	ec b9       	out	0x0c, r30	; 12
+	/* else, no data in buffer - do nothing. This will cause this
+	** interrupt to trigger again immediately (unless there is an
+	** interrupt of higher priority (e.g. Receive complete)). Our
+	** program has nothing else to do so this is not a problem.
+	*/
+}
+ 148:	ff 91       	pop	r31
+ 14a:	ef 91       	pop	r30
+ 14c:	9f 91       	pop	r25
+ 14e:	8f 91       	pop	r24
+ 150:	2f 91       	pop	r18
+ 152:	0f 90       	pop	r0
+ 154:	0f be       	out	0x3f, r0	; 63
+ 156:	0f 90       	pop	r0
+ 158:	1f 90       	pop	r1
+ 15a:	18 95       	reti
+
+0000015c <__vector_9>:
+		
+/*
+ * Define the interrupt handler for UART Receive Complete - i.e. a new
+ * character has arrived in the UART Data Register (UDR).
+ */
+ISR(UART_RX_vect) {
+ 15c:	1f 92       	push	r1
+ 15e:	0f 92       	push	r0
+ 160:	0f b6       	in	r0, 0x3f	; 63
+ 162:	0f 92       	push	r0
+ 164:	11 24       	eor	r1, r1
+ 166:	2f 93       	push	r18
+ 168:	3f 93       	push	r19
+ 16a:	4f 93       	push	r20
+ 16c:	5f 93       	push	r21
+ 16e:	6f 93       	push	r22
+ 170:	7f 93       	push	r23
+ 172:	8f 93       	push	r24
+ 174:	9f 93       	push	r25
+ 176:	af 93       	push	r26
+ 178:	bf 93       	push	r27
+ 17a:	ef 93       	push	r30
+ 17c:	ff 93       	push	r31
+	** variable
+	*/
+
+	/*When writing to the register, the UART Transmit Data register is written.
+	  When reading from UDR, the UART Receive Data register is read.*/
+	input = UDR;
+ 17e:	9c b1       	in	r25, 0x0c	; 12
+
+	if(input >= '0' && input <= '9') {
+ 180:	89 2f       	mov	r24, r25
+ 182:	80 53       	subi	r24, 0x30	; 48
+ 184:	8a 30       	cpi	r24, 0x0A	; 10
+ 186:	50 f4       	brcc	.+20     	; 0x19c <__vector_9+0x40>
+		/* Character is a number - output number string */
+	    /* We can use input-'0' (i.e. input - ASCII 48) as our
+		** index into the numbers array above */
+		output_string(numbers[input - 48]);
+ 188:	e9 2f       	mov	r30, r25
+ 18a:	f0 e0       	ldi	r31, 0x00	; 0
+ 18c:	ee 0f       	add	r30, r30
+ 18e:	ff 1f       	adc	r31, r31
+ 190:	ee 5c       	subi	r30, 0xCE	; 206
+ 192:	ff 4f       	sbci	r31, 0xFF	; 255
+ 194:	80 81       	ld	r24, Z
+ 196:	91 81       	ldd	r25, Z+1	; 0x01
+ 198:	82 df       	rcall	.-252    	; 0x9e <output_string>
+ 19a:	19 c0       	rjmp	.+50     	; 0x1ce <__vector_9+0x72>
+	** character position. If this is beyond the end of the buffer
+	** we wrap around back to the beginning of the buffer */
+	/* NOTE: this only gets executed within an interrupt handler
+	** so we can be guaranteed uninterrupted access to the buffer.
+	*/
+	if(bytes_in_buffer < BUFFER_SIZE) {
+ 19c:	80 91 a6 00 	lds	r24, 0x00A6
+ 1a0:	80 34       	cpi	r24, 0x40	; 64
+ 1a2:	a8 f4       	brcc	.+42     	; 0x1ce <__vector_9+0x72>
+		/* We have room to add this byte */
+		buffer[insert_pos++] = c;
+ 1a4:	80 91 e7 00 	lds	r24, 0x00E7
+ 1a8:	e8 2f       	mov	r30, r24
+ 1aa:	f0 e0       	ldi	r31, 0x00	; 0
+ 1ac:	e9 55       	subi	r30, 0x59	; 89
+ 1ae:	ff 4f       	sbci	r31, 0xFF	; 255
+ 1b0:	90 83       	st	Z, r25
+ 1b2:	8f 5f       	subi	r24, 0xFF	; 255
+ 1b4:	80 93 e7 00 	sts	0x00E7, r24
+		bytes_in_buffer++;
+ 1b8:	80 91 a6 00 	lds	r24, 0x00A6
+ 1bc:	8f 5f       	subi	r24, 0xFF	; 255
+ 1be:	80 93 a6 00 	sts	0x00A6, r24
+		if(insert_pos == BUFFER_SIZE) {
+ 1c2:	80 91 e7 00 	lds	r24, 0x00E7
+ 1c6:	80 34       	cpi	r24, 0x40	; 64
+ 1c8:	11 f4       	brne	.+4      	; 0x1ce <__vector_9+0x72>
+			/* Wrap around buffer pointer if necessary */
+			insert_pos = 0;
+ 1ca:	10 92 e7 00 	sts	0x00E7, r1
+
+	} else {
+		/* Output just the character received */
+	    output_char(input);
+	}
+}
+ 1ce:	ff 91       	pop	r31
+ 1d0:	ef 91       	pop	r30
+ 1d2:	bf 91       	pop	r27
+ 1d4:	af 91       	pop	r26
+ 1d6:	9f 91       	pop	r25
+ 1d8:	8f 91       	pop	r24
+ 1da:	7f 91       	pop	r23
+ 1dc:	6f 91       	pop	r22
+ 1de:	5f 91       	pop	r21
+ 1e0:	4f 91       	pop	r20
+ 1e2:	3f 91       	pop	r19
+ 1e4:	2f 91       	pop	r18
+ 1e6:	0f 90       	pop	r0
+ 1e8:	0f be       	out	0x3f, r0	; 63
+ 1ea:	0f 90       	pop	r0
+ 1ec:	1f 90       	pop	r1
+ 1ee:	18 95       	reti
+
+000001f0 <_exit>:
+ 1f0:	f8 94       	cli
+
+000001f2 <__stop_program>:
+ 1f2:	ff cf       	rjmp	.-2      	; 0x1f2 <__stop_program>

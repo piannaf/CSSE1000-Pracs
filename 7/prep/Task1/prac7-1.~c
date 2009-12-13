@@ -1,0 +1,25 @@
+/* FILE: prac7-1.c */
+
+#include <stdio.h>
+
+int main(void)
+{
+	int input = 0;
+	int total = 0;
+
+	printf("CSSE1000 PRAC 7 PREP TASK 1 - ACCUMULATOR\n");
+	printf("Justin Mancinelli - 42094353\n");
+
+	while(1){
+		total += input;
+		printf("the accumulated total is %d\n", total);
+
+		printf("enter a number: ");
+		scanf("%d", &input);
+
+		if(input == 0)
+			break;
+	}
+
+	return 0;
+}

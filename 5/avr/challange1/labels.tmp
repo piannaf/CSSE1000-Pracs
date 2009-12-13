@@ -1,0 +1,25 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.30</VERSION>
+ <DEVICE>AT90S8515</DEVICE>
+ <WORKING_DIR>E:\classes\csse1000\Prac\5\avr\challange1</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>E:\classes\csse1000\Prac\5\avr\challange1\challange1.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes\8515def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>E:\classes\csse1000\Prac\5\avr\challange1\challange1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>E:\classes\csse1000\Prac\5\avr\challange1\challange1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>E:\classes\csse1000\Prac\5\avr\challange1\challange1.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>E:\classes\csse1000\Prac\5\avr\challange1\challange1.asm</FILE><LINE>33</LINE></RESET>
+  <mainloop><FILE>E:\classes\csse1000\Prac\5\avr\challange1\challange1.asm</FILE><LINE>64</LINE></mainloop>
+ </LABELS>
+</ASSEMBLER_INFO>

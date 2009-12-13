@@ -1,0 +1,25 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.30</VERSION>
+ <DEVICE>AT90S8515</DEVICE>
+ <WORKING_DIR>E:\classes\csse1000\Prac\5\avr\led</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>E:\classes\csse1000\Prac\5\avr\led\led.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes\8515def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>E:\classes\csse1000\Prac\5\avr\led\led.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>E:\classes\csse1000\Prac\5\avr\led\led.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>E:\classes\csse1000\Prac\5\avr\led\led.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>E:\classes\csse1000\Prac\5\avr\led\led.asm</FILE><LINE>6</LINE></RESET>
+  <loop><FILE>E:\classes\csse1000\Prac\5\avr\led\led.asm</FILE><LINE>15</LINE></loop>
+ </LABELS>
+</ASSEMBLER_INFO>

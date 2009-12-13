@@ -1,0 +1,33 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.30</VERSION>
+ <DEVICE>AT90S8515</DEVICE>
+ <WORKING_DIR>F:\classes\csse1000\Prac\9\Prep\prep</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools4.13\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools4.13\AvrAssembler2\Appnotes\8515def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>17</LINE></RESET>
+  <EXT_INT1><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>71</LINE></EXT_INT1>
+  <TIMER1_OCA><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>113</LINE></TIMER1_OCA>
+  <mainloop><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>65</LINE></mainloop>
+  <stop><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>99</LINE></stop>
+  <start><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>83</LINE></start>
+  <end_ext_int1><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>107</LINE></end_ext_int1>
+  <restore_sreg><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>160</LINE></restore_sreg>
+  <increment><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>141</LINE></increment>
+  <display><FILE>F:\classes\csse1000\Prac\9\Prep\prep\prep.asm</FILE><LINE>157</LINE></display>
+ </LABELS>
+</ASSEMBLER_INFO>

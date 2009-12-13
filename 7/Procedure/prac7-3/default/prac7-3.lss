@@ -1,0 +1,137 @@
+
+prac7-3.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000006a  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  000000be  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000001b  00000000  00000000  000000de  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000084  00000000  00000000  000000f9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000050  00000000  00000000  0000017d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000000c9  00000000  00000000  000001cd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000020  00000000  00000000  00000298  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    0000008c  00000000  00000000  000002b8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c c0       	rjmp	.+24     	; 0x1a <__ctors_end>
+   2:	13 c0       	rjmp	.+38     	; 0x2a <__bad_interrupt>
+   4:	12 c0       	rjmp	.+36     	; 0x2a <__bad_interrupt>
+   6:	11 c0       	rjmp	.+34     	; 0x2a <__bad_interrupt>
+   8:	10 c0       	rjmp	.+32     	; 0x2a <__bad_interrupt>
+   a:	0f c0       	rjmp	.+30     	; 0x2a <__bad_interrupt>
+   c:	0e c0       	rjmp	.+28     	; 0x2a <__bad_interrupt>
+   e:	0d c0       	rjmp	.+26     	; 0x2a <__bad_interrupt>
+  10:	0c c0       	rjmp	.+24     	; 0x2a <__bad_interrupt>
+  12:	0b c0       	rjmp	.+22     	; 0x2a <__bad_interrupt>
+  14:	0a c0       	rjmp	.+20     	; 0x2a <__bad_interrupt>
+  16:	09 c0       	rjmp	.+18     	; 0x2a <__bad_interrupt>
+  18:	08 c0       	rjmp	.+16     	; 0x2a <__bad_interrupt>
+
+0000001a <__ctors_end>:
+  1a:	11 24       	eor	r1, r1
+  1c:	1f be       	out	0x3f, r1	; 63
+  1e:	cf e5       	ldi	r28, 0x5F	; 95
+  20:	d2 e0       	ldi	r29, 0x02	; 2
+  22:	de bf       	out	0x3e, r29	; 62
+  24:	cd bf       	out	0x3d, r28	; 61
+  26:	02 d0       	rcall	.+4      	; 0x2c <main>
+  28:	1e c0       	rjmp	.+60     	; 0x66 <_exit>
+
+0000002a <__bad_interrupt>:
+  2a:	ea cf       	rjmp	.-44     	; 0x0 <__vectors>
+
+0000002c <main>:
+int main(void)
+{
+	unsigned char input = 0x00;
+
+	/* Set PORT A, B, D direction to output */
+	DDRA = 0xFF; 				// Left Digit
+  2c:	8f ef       	ldi	r24, 0xFF	; 255
+  2e:	8a bb       	out	0x1a, r24	; 26
+	DDRB = 0xFF; 				// Right Digit
+  30:	87 bb       	out	0x17, r24	; 23
+	DDRD = 0xFF; 				// Status LEDs
+  32:	81 bb       	out	0x11, r24	; 17
+
+	/* Set PORT C direction to input */
+	DDRC = 0x00;
+  34:	14 ba       	out	0x14, r1	; 20
+  36:	90 e0       	ldi	r25, 0x00	; 0
+
+		/* set status */
+		if( input == 0x83 )
+			PORTD = 0x01;		// Open
+		else
+			PORTD = 0x02;		// Closed
+  38:	42 e0       	ldi	r20, 0x02	; 2
+		PORTA = input >> 4;		// shift the nibble
+		PORTB = input & 0x0F;   // mask the nibble
+
+		/* set status */
+		if( input == 0x83 )
+			PORTD = 0x01;		// Open
+  3a:	31 e0       	ldi	r19, 0x01	; 1
+	/* Set PORT C direction to input */
+	DDRC = 0x00;
+
+	while(1) {
+		/* output the inputed combination */
+		PORTA = input >> 4;		// shift the nibble
+  3c:	29 2f       	mov	r18, r25
+  3e:	22 95       	swap	r18
+  40:	2f 70       	andi	r18, 0x0F	; 15
+  42:	2b bb       	out	0x1b, r18	; 27
+		PORTB = input & 0x0F;   // mask the nibble
+  44:	89 2f       	mov	r24, r25
+  46:	8f 70       	andi	r24, 0x0F	; 15
+  48:	88 bb       	out	0x18, r24	; 24
+
+		/* set status */
+		if( input == 0x83 )
+  4a:	93 38       	cpi	r25, 0x83	; 131
+  4c:	11 f4       	brne	.+4      	; 0x52 <__SREG__+0x13>
+			PORTD = 0x01;		// Open
+  4e:	32 bb       	out	0x12, r19	; 18
+  50:	01 c0       	rjmp	.+2      	; 0x54 <__SREG__+0x15>
+		else
+			PORTD = 0x02;		// Closed
+  52:	42 bb       	out	0x12, r20	; 18
+
+		/* Wait for button to be pushed */
+		while( (PINC & 0x10) ){
+  54:	9c 99       	sbic	0x13, 4	; 19
+  56:	fe cf       	rjmp	.-4      	; 0x54 <__SREG__+0x15>
+		}
+
+		/* Wait for button to be released */
+		while( !(PINC & 0x10) ){
+  58:	9c 9b       	sbis	0x13, 4	; 19
+  5a:	fe cf       	rjmp	.-4      	; 0x58 <__SREG__+0x19>
+
+		/* set input */
+		input = input >> 4; 	// shift left digit to right digit
+								// note, the left digit will be 0 after this operation
+		
+		input |= PINC << 4;		// shift the input to be in the left digit
+  5c:	93 b3       	in	r25, 0x13	; 19
+  5e:	92 95       	swap	r25
+  60:	90 7f       	andi	r25, 0xF0	; 240
+  62:	92 2b       	or	r25, r18
+  64:	eb cf       	rjmp	.-42     	; 0x3c <__CCP__+0x8>
+
+00000066 <_exit>:
+  66:	f8 94       	cli
+
+00000068 <__stop_program>:
+  68:	ff cf       	rjmp	.-2      	; 0x68 <__stop_program>

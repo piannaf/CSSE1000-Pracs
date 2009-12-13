@@ -1,0 +1,13 @@
+Address = 0x0000002c  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:10:0:-1
+Address = 0x0000002c  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:14:0:-1
+Address = 0x00000030  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:17:0:-1
+Address = 0x00000036  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:27:0:-1
+Address = 0x00000038  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:25:0:-1
+Address = 0x0000003a  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:21:0:-1
+Address = 0x0000003c  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:24:0:-1
+Address = 0x00000040  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:25:0:-1
+Address = 0x00000044  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:27:0:-1
+Address = 0x00000046  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:30:0:-1
+Address = 0x0000004a  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:34:0:-1
+Address = 0x0000004e  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:41:0:-1
+Address = 0x00000060  File:line:col:begin = E:\classes\csse1000\Prac\7\default/../tutortask.c:41:0:-1

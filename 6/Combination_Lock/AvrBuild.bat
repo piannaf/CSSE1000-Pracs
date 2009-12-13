@@ -1,0 +1,2 @@
+@ECHO OFF
+"C:\Program Files\Atmel\AVR Tools\AvrAssembler2\avrasm2.exe" -S "E:\classes\csse1000\Prac\6\Combination_Lock\labels.tmp" -fI -W+ie -o "E:\classes\csse1000\Prac\6\Combination_Lock\Combination_Lock.hex" -d "E:\classes\csse1000\Prac\6\Combination_Lock\Combination_Lock.obj" -e "E:\classes\csse1000\Prac\6\Combination_Lock\Combination_Lock.eep" -m "E:\classes\csse1000\Prac\6\Combination_Lock\Combination_Lock.map" "E:\classes\csse1000\Prac\6\Combination_Lock\Combination_Lock.asm"

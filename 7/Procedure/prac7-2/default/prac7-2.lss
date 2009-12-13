@@ -1,0 +1,97 @@
+
+prac7-2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000004a  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  0000009e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000001b  00000000  00000000  000000be  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000084  00000000  00000000  000000d9  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000050  00000000  00000000  0000015d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   00000091  00000000  00000000  000001ad  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000020  00000000  00000000  00000240  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    0000008c  00000000  00000000  00000260  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c c0       	rjmp	.+24     	; 0x1a <__ctors_end>
+   2:	13 c0       	rjmp	.+38     	; 0x2a <__bad_interrupt>
+   4:	12 c0       	rjmp	.+36     	; 0x2a <__bad_interrupt>
+   6:	11 c0       	rjmp	.+34     	; 0x2a <__bad_interrupt>
+   8:	10 c0       	rjmp	.+32     	; 0x2a <__bad_interrupt>
+   a:	0f c0       	rjmp	.+30     	; 0x2a <__bad_interrupt>
+   c:	0e c0       	rjmp	.+28     	; 0x2a <__bad_interrupt>
+   e:	0d c0       	rjmp	.+26     	; 0x2a <__bad_interrupt>
+  10:	0c c0       	rjmp	.+24     	; 0x2a <__bad_interrupt>
+  12:	0b c0       	rjmp	.+22     	; 0x2a <__bad_interrupt>
+  14:	0a c0       	rjmp	.+20     	; 0x2a <__bad_interrupt>
+  16:	09 c0       	rjmp	.+18     	; 0x2a <__bad_interrupt>
+  18:	08 c0       	rjmp	.+16     	; 0x2a <__bad_interrupt>
+
+0000001a <__ctors_end>:
+  1a:	11 24       	eor	r1, r1
+  1c:	1f be       	out	0x3f, r1	; 63
+  1e:	cf e5       	ldi	r28, 0x5F	; 95
+  20:	d2 e0       	ldi	r29, 0x02	; 2
+  22:	de bf       	out	0x3e, r29	; 62
+  24:	cd bf       	out	0x3d, r28	; 61
+  26:	02 d0       	rcall	.+4      	; 0x2c <main>
+  28:	0e c0       	rjmp	.+28     	; 0x46 <_exit>
+
+0000002a <__bad_interrupt>:
+  2a:	ea cf       	rjmp	.-44     	; 0x0 <__vectors>
+
+0000002c <main>:
+int main(void)
+{
+	unsigned char total = 0;
+
+	/* Set PORT B direction to output */
+	DDRB = 0xFF;
+  2c:	8f ef       	ldi	r24, 0xFF	; 255
+  2e:	87 bb       	out	0x17, r24	; 23
+
+	/* Set PORT A and C direction to input */
+	DDRA = 0x00;
+  30:	1a ba       	out	0x1a, r1	; 26
+	DDRC = 0x00;
+  32:	14 ba       	out	0x14, r1	; 20
+  34:	90 e0       	ldi	r25, 0x00	; 0
+
+	while(1) {
+		/* output total */
+		PORTB = total;
+  36:	98 bb       	out	0x18, r25	; 24
+
+		/* Wait for button to be pushed */
+		while( (PINA & 0x01) ){
+  38:	c8 99       	sbic	0x19, 0	; 25
+  3a:	fe cf       	rjmp	.-4      	; 0x38 <__CCP__+0x4>
+		}
+
+		/* Wait for button to be released */
+		while( !(PINA & 0x01) ){
+  3c:	c8 9b       	sbis	0x19, 0	; 25
+  3e:	fe cf       	rjmp	.-4      	; 0x3c <__CCP__+0x8>
+		}
+
+		/* do the accumulation */
+		total += PINC;
+  40:	83 b3       	in	r24, 0x13	; 19
+  42:	98 0f       	add	r25, r24
+  44:	f8 cf       	rjmp	.-16     	; 0x36 <__CCP__+0x2>
+
+00000046 <_exit>:
+  46:	f8 94       	cli
+
+00000048 <__stop_program>:
+  48:	ff cf       	rjmp	.-2      	; 0x48 <__stop_program>

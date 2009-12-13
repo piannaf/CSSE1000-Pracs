@@ -1,0 +1,27 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.30</VERSION>
+ <DEVICE>AT90S8515</DEVICE>
+ <WORKING_DIR>D:\classes\csse1000\Prac\8\Prep\task1</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools4.13\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files\Atmel\AVR Tools4.13\AvrAssembler2\Appnotes\8515def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.asm</FILE><LINE>13</LINE></RESET>
+  <mainloop><FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.asm</FILE><LINE>29</LINE></mainloop>
+  <delay><FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.asm</FILE><LINE>55</LINE></delay>
+  <loop><FILE>D:\classes\csse1000\Prac\8\Prep\task1\task1.asm</FILE><LINE>67</LINE></loop>
+ </LABELS>
+</ASSEMBLER_INFO>
